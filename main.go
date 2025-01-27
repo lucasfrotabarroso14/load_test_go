@@ -55,12 +55,14 @@ func main() {
 		}()
 
 	}
-	wg.Wait()
 
-	for i := 0; i < totalReqs; i++ {
-		requestChan <- i
-	}
-	close(requestChan)
+	go func() {
+		for i := 0; i < totalReqs; i++ {
+			requestChan <- i
+		}
+		close(requestChan)
+	}()
+	wg.Wait()
 
 	elapsed := time.Since(start)
 
